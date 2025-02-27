@@ -133,7 +133,7 @@ The service will be accessible at http://localhost:5000.
 
 ---
 
-## Example Curl Requests
+## Sample Curl Requests
 
 ### Process a Receipt
 
