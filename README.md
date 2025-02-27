@@ -173,7 +173,7 @@ curl -X POST http://localhost:5000/receipts/process \
 After processing a receipt, use the returned receipt ID to retrieve the points:
 
 ```bash
-curl http://localhost:5000/receipts/<receipt_id>/points
+curl http://localhost:5000/receipts/c3c1a7aa-d3e4-429f-8b78-57c1bda6772e/points
 ```
 
 
