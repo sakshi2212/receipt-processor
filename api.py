@@ -81,7 +81,3 @@ def index():
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
 
-# docker build -t flask-receipt-processor .
-# docker run -p 5000:5000 flask-receipt-processor
-# http://localhost:5000/
-
