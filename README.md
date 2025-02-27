@@ -13,7 +13,7 @@ The service provides two main API endpoints:
 1. **Process Receipt**  
    - **Endpoint:** `/receipts/process`
    - **Method:** `POST`
-   - **Input:** A JSON receipt (see [API Input](#api-input))
+   - **Input:** A JSON receipt
    - **Output:** A JSON object containing a unique receipt ID
 
 2. **Get Points**  
@@ -123,16 +123,42 @@ Points for each receipt are calculated based on the following rules:
 Follow these steps to run the application using Docker:
 
 ```bash
-https://github.com/sakshi2212/receipt-processor.git
-```
-
-```bash
+git clone https://github.com/sakshi2212/receipt-processor.git
 docker build -t receipt-processor .
-```
-
-```bash
 docker run -p 5000:5000 receipt-processor
 ```
-
 The service will be accessible at http://localhost:5000.
+
+---
+
+## Example Curl Requests
+
+### Process a Receipt
+
+To process a receipt, use the following curl command:
+
+```bash
+curl -X POST http://localhost:5000/receipts/process \
+     -H "Content-Type: application/json" \
+     -d '{
+           "retailer": "Target",
+           "purchaseDate": "2022-01-01",
+           "purchaseTime": "13:01",
+           "items": [
+             { "shortDescription": "Mountain Dew 12PK", "price": "6.49" },
+             { "shortDescription": "Emils Cheese Pizza", "price": "12.25" }
+           ],
+           "total": "35.35"
+         }'
+```
+
+### Get Points 
+
+After processing a receipt, use the returned receipt ID to retrieve the points:
+
+```bash
+curl http://localhost:5000/receipts/<receipt_id>/points
+```
+
+
   
