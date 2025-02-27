@@ -114,7 +114,7 @@ Points for each receipt are calculated based on the following rules:
 - All receipt data and calculated points are stored in memory. Restarting the application will reset this data.
 
 ### Front-End Interaction
-- The front-end (`templates/index.html`) takes a JSON receipt as input and displays both the unique receipt ID and the corresponding points awarded.
+- The front-end (`templates/index.html`) takes a JSON receipt as input and displays both the unique receipt ID and the corresponding points awarded on clicking submit.
 
 ---
 
