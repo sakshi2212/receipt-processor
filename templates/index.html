@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Receipt Processor</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 90%;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    label {
+      font-weight: bold;
+      color: #555;
+    }
+    input[type="file"] {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fafafa;
+    }
+    button {
+      padding: 0.75rem;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #result {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      text-align: center;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Receipt Processor</h1>
+    <form id="receiptForm">
+      <label for="fileInput">Upload JSON Receipt:</label>
+      <input type="file" id="fileInput" accept=".json">
+      <button type="submit">Submit</button>
+    </form>
+    <h2> <p id="result_heading"></p></h2>
+    <p id="result"></p>
+  </div>
+  
+  <script>
+    document.getElementById('receiptForm').onsubmit = async function(event) {
+      event.preventDefault();
+      
+      const fileInput = document.getElementById('fileInput').files[0];
+      if (!fileInput) {
+        alert('Please upload a JSON file.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async function(event) {
+        
+        
+        try {
+          const jsonData = JSON.parse(event.target.result);
+
+          const response = await fetch('/receipts/process', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(jsonData)
+          });
+          
+          const data = await response.json();
+          
+          if (data.id) {
+            const pointsResponse = await fetch(`/receipts/${data.id}/points`);
+            const pointsData = await pointsResponse.json();
+            document.getElementById('result').innerHTML = `<strong>Receipt ID:</strong> ${data.id} <br><strong>Points:</strong> ${pointsData.points}`;
+            document.getElementById('result_heading').innerHTML = 'Result';
+          } else {
+            document.getElementById('result').innerText = 'Error processing receipt';
+          }
+        } catch (error) {
+          document.getElementById('result').innerText = 'Error: The receipt is invalid.';
+        }
+      };
+      reader.readAsText(fileInput);
+    };
+  </script>
+</body>
+</html>
