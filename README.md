@@ -110,7 +110,9 @@ Follow these steps to run the application using Docker:
 
 ```bash
 git clone https://github.com/sakshi2212/receipt-processor.git
+
 docker build -t receipt-processor .
+
 docker run -p 5000:5000 receipt-processor
 ```
 The service will be accessible at http://localhost:5000.
